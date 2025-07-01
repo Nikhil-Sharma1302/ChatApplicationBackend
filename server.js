@@ -27,14 +27,15 @@ mongoose
   });
 
 io.on("connection", (socket) => {
-  
+  console.log("User connected:", socket.id);
+
   socket.on("send-message", async (data) => {
     const { senderId, receiverId, content } = data;
     const message = await Message.create({ senderId, receiverId, content });
     io.emit("receive-message", message);
   });
 
-  socket.on("disconnect");
+  socket.on("disconnect", () => console.log("User disconnected:", socket.id));
 });
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
